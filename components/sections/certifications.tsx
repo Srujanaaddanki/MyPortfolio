@@ -45,7 +45,7 @@ const certificates = [
   {
     image: "7_ChatGPT4PromptEngineeringChatGPTGenerativeAI&LLM_Infosys.png",
     title: "ChatGPT-4 Prompt Engineering",
-    platform: "Infosys",
+    platform: "Infosys Springboard",
     year: 2025
   },
   {
@@ -69,7 +69,7 @@ const certificates = [
   {
     image: "11_ComputationalTheoryLanguagePrinciple&FiniteAutomataTheory_Infosys.png",
     title: "Computational Theory & Finite Automata",
-    platform: "Infosys",
+    platform: "Infosys Springboard",
     year: 2025
   },
   {
@@ -81,13 +81,19 @@ const certificates = [
   {
     image: "13_BuildGenerativeAIAppsandSolutionswithNoCodeTools_Infosys.png",
     title: "Build Generative AI Apps with No-Code Tools",
-    platform: "Infosys",
+    platform: "Infosys Springboard",
     year: 2025
   },
   {
     image: "14_GraphTheory_AlgoUniversity.png",
     title: "Graph Theory",
     platform: "Algo University",
+    year: 2026
+  }
+  {
+    image: "15_MendixRapidDeveloperCertification.png",
+    title: "Mendix Rapid Developer Certification",
+    platform: "Mendix Academy",
     year: 2026
   }
 ];
