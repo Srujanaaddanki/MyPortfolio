@@ -95,7 +95,7 @@ const certificates = [
     title: "Mendix Rapid Developer Certification",
     platform: "Mendix Academy",
     year: 2026
-  }
+  },
 ];
 
 function CertificationCard({ 
