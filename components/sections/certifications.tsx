@@ -89,7 +89,7 @@ const certificates = [
     title: "Graph Theory",
     platform: "Algo University",
     year: 2026
-  }
+  },
   {
     image: "15_MendixRapidDeveloperCertification.png",
     title: "Mendix Rapid Developer Certification",
