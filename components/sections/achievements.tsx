@@ -25,7 +25,7 @@ const achievements = [
   {
     id: "oneworld",
     title: "3rd Runner-Up – One World Competition",
-    description: "Secured top position in competitive problem-solving event.",
+    description: "Secured 3rd Runner-up in the One World Competition, demonstrating strong time management, teamwork, communication, adaptability, and creative problem-solving in a competitive environment.",
     image: "/images/7_OneWorld.jpeg",
     link: null,
     isPrimary: false

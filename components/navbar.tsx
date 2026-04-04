@@ -32,11 +32,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
     setIsMobileMenuOpen(false)
     const element = document.querySelector(href)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+      window.history.pushState(null, "", href)
     }
   }
 
@@ -63,13 +65,14 @@ export function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => (
-            <button
+            <a
               key={item.name}
-              onClick={() => handleNavClick(item.href)}
+              href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             >
               {item.name}
-            </button>
+            </a>
           ))}
         </div>
 
@@ -115,13 +118,14 @@ export function Navbar() {
           >
             <div className="flex flex-col px-4 py-4">
               {navItems.map((item) => (
-                <button
+                <a
                   key={item.name}
-                  onClick={() => handleNavClick(item.href)}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className="rounded-lg px-3 py-3 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 >
                   {item.name}
-                </button>
+                </a>
               ))}
             </div>
           </motion.div>
