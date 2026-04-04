@@ -7,25 +7,28 @@ import Image from "next/image"
 
 const achievements = [
   {
+    id: "leetcode",
+    title: "Solved 350+ DSA Problems",
+    description: "Solved 350+ problems on Data Structures and Algorithms platforms, showcasing strong analytical thinking, coding proficiency, and consistent practice.",
+    image: "/images/11_LeetcodeHeatMap.jpg",
+    link: null,
+    isPrimary: true
+  },
+  {
     id: "oracle",
     title: "OCI 2025 Data Science Certified",
     description: "Recognized for expertise in data science and analytics.",
     image: "/images/6_OracleBadge.png",
-    link: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=317F8ED0F85D446AA9CAB8C0F431A5530FBCD6D74B7B81920DB8BF8DD62F94AB"
+    link: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=317F8ED0F85D446AA9CAB8C0F431A5530FBCD6D74B7B81920DB8BF8DD62F94AB",
+    isPrimary: false
   },
   {
     id: "oneworld",
     title: "3rd Runner-Up – One World Competition",
     description: "Secured top position in competitive problem-solving event.",
     image: "/images/7_OneWorld.jpeg",
-    link: null
-  },
-  {
-    id: "leetcode",
-    title: "Solved 350+ DSA Problems",
-    description: "Solved 350+ problems on Data Structures and Algorithms platforms, showcasing strong analytical thinking, coding proficiency, and consistent practice.",
-    image: "/images/11_LeetcodeHeatMap.jpg",
-    link: null
+    link: null,
+    isPrimary: false
   }
 ]
 
@@ -51,16 +54,21 @@ export function AchievementsSection() {
           </p>
         </motion.div>
         
-        <div className="mx-auto max-w-5xl grid gap-8 sm:grid-cols-2">
+        <div className="mx-auto max-w-6xl grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
           {achievements.map((item, i) => {
             const isClickable = !!item.link;
+            const isPrimary = item.isPrimary;
             
             const CardContent = (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 0.5, delay: i * 0.15 }}
-                className={`glass group h-full flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-xl ${isClickable ? "cursor-pointer" : ""}`}
+                className={`glass group h-full flex flex-col overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:shadow-xl ${
+                  isPrimary 
+                    ? "border-primary/50 shadow-lg shadow-primary/10 relative z-10 hover:-translate-y-2 hover:scale-[1.02]" 
+                    : "border-border/50 hover:border-primary/30 hover:-translate-y-1"
+                } ${isClickable ? "cursor-pointer" : ""}`}
               >
                 {/* Header Image block similar to Projects */}
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-secondary/20 dark:bg-zinc-800/50">
@@ -70,6 +78,11 @@ export function AchievementsSection() {
                     fill
                     className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                   />
+                  {isPrimary && (
+                    <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                      Featured
+                    </div>
+                  )}
                 </div>
                 
                 {/* Text Content */}

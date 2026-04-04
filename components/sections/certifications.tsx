@@ -151,83 +151,88 @@ export function CertificationsSection() {
   const isInView = useInView(ref, { margin: "0px" }) // trigger on entry
   const scrollRef = useRef<HTMLDivElement>(null)
   
-  const [activeId, setActiveId] = useState<number | null>(null)
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true)
-  const isHovered = useRef(false)
-  
-  const [showLeftBtn, setShowLeftBtn] = useState(false)
-  const [showRightBtn, setShowRightBtn] = useState(true)
+  const [lightboxId, setLightboxId] = useState<number | null>(null)
+  const [carouselIndex, setCarouselIndex] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
-  // Duplicated certifications for seamless loop
-  const duplicatedCerts = [...certificates, ...certificates]
+  // Use the original certificates, duplicatedCerts aren't necessary for state-based index wrap-around
+  const certCount = certificates.length
 
   // Handle navigation button visibility
-  const updateNavButtons = () => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    setShowLeftBtn(scrollLeft > 10);
-    setShowRightBtn(scrollLeft < scrollWidth - clientWidth - 10);
-  }
+  // Auto-play interval
+  useEffect(() => {
+    if (!isInView || isHovered || isDragging || lightboxId !== null) return;
 
-  // Handle keyboard navigation for modal
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % certCount);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isInView, isHovered, isDragging, lightboxId, certCount]);
+
+  // Handle keyboard navigation for modal AND carousel
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeId === null) return;
-      if (e.key === "Escape") setActiveId(null);
-      if (e.key === "ArrowLeft") setActiveId((prev) => (prev! > 0 ? prev! - 1 : certificates.length - 1));
-      if (e.key === "ArrowRight") setActiveId((prev) => (prev! < certificates.length - 1 ? prev! + 1 : 0));
+      if (lightboxId !== null) {
+        if (e.key === "Escape") setLightboxId(null)
+        if (e.key === "ArrowLeft") setLightboxId((prev) => (prev! > 0 ? prev! - 1 : certCount - 1))
+        if (e.key === "ArrowRight") setLightboxId((prev) => (prev! < certCount - 1 ? prev! + 1 : 0))
+      } else {
+        if (e.key === "ArrowLeft") setCarouselIndex((prev) => (prev > 0 ? prev - 1 : certCount - 1))
+        if (e.key === "ArrowRight") setCarouselIndex((prev) => (prev < certCount - 1 ? prev + 1 : 0))
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeId]);
-
-  // Consistent 60fps auto-scroll animation
-  useEffect(() => {
-    if (!isInView) return // Pause when out of view
-
-    const scrollContainer = scrollRef.current
-    if (!scrollContainer) return
-
-    let animationId: number
-    const scrollSpeed = 0.5
-
-    const scroll = () => {
-      // Only scroll if auto-scroll is active, mouse is NOT hovering, and NO card is currently zoomed in focus
-      if (isAutoScrolling && !isHovered.current && activeId === null) {
-        scrollContainer.scrollLeft += scrollSpeed
-        
-        // Seamless loop resetting
-        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
-          scrollContainer.scrollLeft = 0
-        }
-        
-        updateNavButtons()
-      }
-      animationId = requestAnimationFrame(scroll)
-    }
-
-    animationId = requestAnimationFrame(scroll)
-    return () => cancelAnimationFrame(animationId)
-  }, [isInView, isAutoScrolling, activeId])
-
-  useEffect(() => {
-    updateNavButtons()
-    window.addEventListener("resize", updateNavButtons)
-    return () => window.removeEventListener("resize", updateNavButtons)
-  }, [])
+  }, [lightboxId, certCount]);
 
   const handleManualScroll = (direction: "left" | "right") => {
-    setIsAutoScrolling(false) // Permanently stop auto-scroll if user interacts
-    setActiveId(null) // Un-focus active cards
+    setCarouselIndex((prev) => {
+      if (direction === "left") return prev > 0 ? prev - 1 : certCount - 1;
+      return (prev + 1) % certCount;
+    });
+  }
+
+  // 3D positioning logic
+  const getCardProps = (index: number) => {
+    // Determine shortest path in circular array
+    let offset = index - carouselIndex;
+    if (offset > certCount / 2) offset -= certCount;
+    if (offset < -certCount / 2) offset += certCount;
+
+    const absOffset = Math.abs(offset);
     
-    if (!scrollRef.current) return;
-    const scrollAmount = 350
-    scrollRef.current.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
-      behavior: "smooth"
-    })
-    
-    setTimeout(updateNavButtons, 400)
+    // Hide cards that are too far
+    if (absOffset > 2) {
+       return {
+         display: true, // indicates hidden using a boolean check later
+         animate: { x: 0, y: 0, scale: 0, opacity: 0, filter: "blur(0px)", rotateY: 0, zIndex: 0 },
+         transition: {}
+       }
+    }
+
+    const isActive = offset === 0;
+    const isAdjacent = absOffset === 1;
+
+    return {
+      display: false,
+      animate: {
+        x: offset * (isAdjacent ? 160 : 300), // distance
+        y: isActive ? -10 : 0, 
+        scale: Math.max(1 - absOffset * 0.15, 0.7),
+        zIndex: 50 - absOffset,
+        opacity: isActive ? 1 : Math.max(1 - absOffset * 0.4, 0.2),
+        filter: isActive ? "blur(0px)" : `blur(${absOffset * 2}px)`,
+        rotateY: offset * -15 // rotate inwards towards center
+      },
+      transition: { 
+        type: "spring", 
+        stiffness: 300, 
+        damping: 30,
+        mass: 0.8
+      } as const
+    };
   }
 
   return (
@@ -237,13 +242,13 @@ export function CertificationsSection() {
     >
       {/* Modal Lightbox */}
       <AnimatePresence>
-        {activeId !== null && (
+        {lightboxId !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 sm:p-8"
-            onClick={() => setActiveId(null)}
+            onClick={() => setLightboxId(null)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -254,7 +259,7 @@ export function CertificationsSection() {
               onClick={(e) => e.stopPropagation()} // Prevent close on click inside
             >
               <button
-                onClick={() => setActiveId(null)}
+                onClick={() => setLightboxId(null)}
                 className="absolute -top-10 right-0 sm:-top-8 sm:-right-8 z-50 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition backdrop-blur-sm"
               >
                 <X className="h-6 w-6" />
@@ -263,7 +268,7 @@ export function CertificationsSection() {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActiveId((prev) => (prev! > 0 ? prev! - 1 : certificates.length - 1));
+                  setLightboxId((prev) => (prev! > 0 ? prev! - 1 : certCount - 1));
                 }}
                 className="absolute left-0 sm:-left-12 top-1/2 -translate-y-1/2 z-50 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition backdrop-blur-sm shadow-xl"
               >
@@ -273,7 +278,7 @@ export function CertificationsSection() {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActiveId((prev) => (prev! < certificates.length - 1 ? prev! + 1 : 0));
+                  setLightboxId((prev) => (prev! < certCount - 1 ? prev! + 1 : 0));
                 }}
                 className="absolute right-0 sm:-right-12 top-1/2 -translate-y-1/2 z-50 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition backdrop-blur-sm shadow-xl"
               >
@@ -282,8 +287,8 @@ export function CertificationsSection() {
 
               <div className="relative w-full h-[65vh] sm:h-[75vh] flex items-center justify-center rounded-xl bg-black/40 overflow-hidden shadow-2xl ring-1 ring-white/10">
                 <Image
-                  src={`/images/${certificates[activeId].image}`}
-                  alt={certificates[activeId].title}
+                  src={`/images/${certificates[lightboxId].image}`}
+                  alt={certificates[lightboxId].title}
                   width={1920}
                   height={1080}
                   className="object-contain h-full w-full transform origin-center transition-transform hover:scale-150 active:scale-100 cursor-zoom-in active:cursor-zoom-out duration-300"
@@ -292,9 +297,9 @@ export function CertificationsSection() {
               </div>
 
               <div className="mt-6 text-center text-white p-4 max-w-3xl">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight">{certificates[activeId].title}</h3>
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight">{certificates[lightboxId].title}</h3>
                 <p className="mt-2 text-sm sm:text-base font-medium opacity-80 text-white/90">
-                  {certificates[activeId].platform} • {certificates[activeId].year}
+                  {certificates[lightboxId].platform} • {certificates[lightboxId].year}
                 </p>
               </div>
             </motion.div>
@@ -317,69 +322,89 @@ export function CertificationsSection() {
           </p>
         </motion.div>
 
-        {/* Carousel Container */}
+        {/* 3D Carousel Container */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="group relative"
-          onMouseEnter={() => { isHovered.current = true }}
-          onMouseLeave={() => { isHovered.current = false }}
+          className="group relative flex items-center justify-center h-[380px] w-full"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Navigation Buttons */}
-          <AnimatePresence>
-            {showLeftBtn && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleManualScroll("left")
-                }}
-                className="absolute -left-4 top-[40%] z-40 hidden h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-lg transition-all hover:scale-110 hover:shadow-xl sm:flex sm:-left-6"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showRightBtn && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleManualScroll("right")
-                }}
-                className="absolute -right-4 top-[40%] z-40 hidden h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-lg transition-all hover:scale-110 hover:shadow-xl sm:flex sm:-right-6"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* Scrolling container (Removed CSS scroll snapping to prevent fighting the JS loop) */}
-          <div
-            ref={scrollRef}
-            onScroll={updateNavButtons}
-            className="flex gap-6 overflow-x-auto px-4 py-8 pb-12 sm:px-8 [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
-            style={{ 
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
+          {/* Navigation Buttons for Carousel */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleManualScroll("left")
             }}
+            className="absolute left-2 sm:left-4 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur-sm text-foreground shadow-lg transition-all hover:scale-110 hover:shadow-xl hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Previous certificate"
           >
-            {duplicatedCerts.map((cert, index) => (
-              <CertificationCard 
-                key={`${cert.title}-${index}`}
-                cert={cert} 
-                onClick={() => setActiveId(index % certificates.length)}
-              />
-            ))}
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleManualScroll("right")
+            }}
+            className="absolute right-2 sm:right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur-sm text-foreground shadow-lg transition-all hover:scale-110 hover:shadow-xl hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
+            aria-label="Next certificate"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          {/* Cards Area with Perspective */}
+          <div 
+            className="relative flex items-center justify-center w-full max-w-5xl h-full perspective-[1200px]"
+          >
+            {/* Invisible Drag Surface for Mobile Swipes */}
+            <motion.div
+              className="absolute inset-0 z-50 cursor-grab active:cursor-grabbing"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={(e, { offset, velocity }) => {
+                setIsDragging(false)
+                const swipe = Math.abs(offset.x) * velocity.x
+                if (swipe < -100) {
+                  handleManualScroll("right")
+                } else if (swipe > 100) {
+                  handleManualScroll("left")
+                }
+              }}
+            />
+
+            {certificates.map((cert, index) => {
+              const props = getCardProps(index);
+              if (props.display) return null; // hidden
+              
+              return (
+                <motion.div
+                  key={cert.title}
+                  initial={false}
+                  animate={props.animate}
+                  transition={props.transition as any}
+                  className="absolute pointer-events-none" // ensure events pass through to swipe layer unless clicked
+                  style={{ zIndex: props.animate.zIndex }}
+                >
+                  <div className="pointer-events-auto">
+                    <CertificationCard 
+                      cert={cert} 
+                      onClick={() => {
+                        // If clicking center card, open lightbox. Otherwise rotate to it.
+                        if (index === carouselIndex) {
+                          setLightboxId(index)
+                        } else {
+                          setCarouselIndex(index)
+                        }
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
         </motion.div>
       </div>
