@@ -35,11 +35,15 @@ export function Navbar() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     setIsMobileMenuOpen(false)
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-      window.history.pushState(null, "", href)
-    }
+    
+    // Slight delay ensures the scroll isn't cancelled by the menu closing animation
+    setTimeout(() => {
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" })
+        window.history.pushState(null, "", href)
+      }
+    }, 100)
   }
 
   return (
@@ -116,13 +120,13 @@ export function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="bg-card border-b border-border md:hidden"
           >
-            <div className="flex flex-col px-4 py-4">
+            <div className="flex flex-col p-4 gap-1">
               {navItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="rounded-lg px-3 py-3 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  className="block w-full rounded-lg px-4 py-3 text-left text-base font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground active:bg-secondary"
                 >
                   {item.name}
                 </a>
