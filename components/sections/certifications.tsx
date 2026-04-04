@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
-import { Award, ChevronLeft, ChevronRight } from "lucide-react"
+import { Award, ChevronLeft, ChevronRight, X } from "lucide-react"
 import Image from "next/image"
 
 const certificates = [
@@ -89,16 +89,20 @@ const certificates = [
     title: "Graph Theory",
     platform: "Algo University",
     year: 2026
+  },
+  {
+    image: "15_MendixRapidDeveloperCertification.png",
+    title: "Mendix Rapid Developer Certification",
+    platform: "Mendix Academy",
+    year: 2026
   }
 ];
 
 function CertificationCard({ 
   cert, 
-  isActive, 
   onClick 
 }: { 
   cert: typeof certificates[0], 
-  isActive: boolean,
   onClick: () => void 
 }) {
   return (
@@ -108,17 +112,8 @@ function CertificationCard({
         onClick()
       }}
       layout
-      animate={{
-        scale: isActive ? 1.15 : 1,
-        zIndex: isActive ? 50 : 1,
-      }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      whileHover={!isActive ? { scale: 1.05 } : {}}
-      className={`glass group flex-shrink-0 w-80 cursor-pointer rounded-xl border border-border bg-card dark:bg-card/90 overflow-hidden transition-shadow duration-300 ${
-        isActive 
-          ? "shadow-2xl shadow-primary/20 dark:shadow-primary/30 ring-1 ring-primary/50" 
-          : "hover:shadow-xl hover:border-primary/30 shadow-sm"
-      }`}
+      whileHover={{ scale: 1.05 }}
+      className="glass group flex-shrink-0 w-80 cursor-pointer rounded-xl border border-border bg-card dark:bg-card/90 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/30 shadow-sm"
     >
       {/* Clean image container */}
       <div className="relative aspect-[4/3] bg-zinc-100 dark:bg-zinc-800/50 p-4">
@@ -136,14 +131,14 @@ function CertificationCard({
         )}
       </div>
       
-      <div className="p-5 bg-card relative z-10">
+      <div className="p-5 bg-card relative z-10 flex flex-col h-[130px]">
         <h3 className="font-bold text-foreground line-clamp-2 text-lg">
           {cert.title}
         </h3>
         <p className="mt-2 text-sm text-muted-foreground truncate" title={cert.platform}>
           {cert.platform}
         </p>
-        <p className="mt-1 text-xs font-medium text-muted-foreground/70">
+        <p className="mt-auto text-xs font-medium text-muted-foreground/70">
           {cert.year}
         </p>
       </div>
@@ -173,6 +168,18 @@ export function CertificationsSection() {
     setShowLeftBtn(scrollLeft > 10);
     setShowRightBtn(scrollLeft < scrollWidth - clientWidth - 10);
   }
+
+  // Handle keyboard navigation for modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (activeId === null) return;
+      if (e.key === "Escape") setActiveId(null);
+      if (e.key === "ArrowLeft") setActiveId((prev) => (prev! > 0 ? prev! - 1 : certificates.length - 1));
+      if (e.key === "ArrowRight") setActiveId((prev) => (prev! < certificates.length - 1 ? prev! + 1 : 0));
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeId]);
 
   // Consistent 60fps auto-scroll animation
   useEffect(() => {
@@ -227,12 +234,73 @@ export function CertificationsSection() {
     <section 
       id="certifications" 
       className="relative bg-secondary/10 py-24 overflow-hidden"
-      onClick={() => setActiveId(null)} // Click outside resets active card
     >
-      {/* Invisible overlay catches clicks outside active card */}
-      {activeId !== null && (
-        <div className="fixed inset-0 z-30" />
-      )}
+      {/* Modal Lightbox */}
+      <AnimatePresence>
+        {activeId !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 sm:p-8"
+            onClick={() => setActiveId(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-5xl max-h-full flex flex-col items-center justify-center p-2 sm:p-4 rounded-2xl"
+              onClick={(e) => e.stopPropagation()} // Prevent close on click inside
+            >
+              <button
+                onClick={() => setActiveId(null)}
+                className="absolute -top-10 right-0 sm:-top-8 sm:-right-8 z-50 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition backdrop-blur-sm"
+              >
+                <X className="h-6 w-6" />
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveId((prev) => (prev! > 0 ? prev! - 1 : certificates.length - 1));
+                }}
+                className="absolute left-0 sm:-left-12 top-1/2 -translate-y-1/2 z-50 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition backdrop-blur-sm shadow-xl"
+              >
+                <ChevronLeft className="h-8 w-8" />
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveId((prev) => (prev! < certificates.length - 1 ? prev! + 1 : 0));
+                }}
+                className="absolute right-0 sm:-right-12 top-1/2 -translate-y-1/2 z-50 rounded-full bg-white/10 p-3 text-white hover:bg-white/20 transition backdrop-blur-sm shadow-xl"
+              >
+                <ChevronRight className="h-8 w-8" />
+              </button>
+
+              <div className="relative w-full h-[65vh] sm:h-[75vh] flex items-center justify-center rounded-xl bg-black/40 overflow-hidden shadow-2xl ring-1 ring-white/10">
+                <Image
+                  src={`/images/${certificates[activeId].image}`}
+                  alt={certificates[activeId].title}
+                  width={1920}
+                  height={1080}
+                  className="object-contain h-full w-full transform origin-center transition-transform hover:scale-150 active:scale-100 cursor-zoom-in active:cursor-zoom-out duration-300"
+                  quality={100}
+                />
+              </div>
+
+              <div className="mt-6 text-center text-white p-4 max-w-3xl">
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight">{certificates[activeId].title}</h3>
+                <p className="mt-2 text-sm sm:text-base font-medium opacity-80 text-white/90">
+                  {certificates[activeId].platform} • {certificates[activeId].year}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -309,8 +377,7 @@ export function CertificationsSection() {
               <CertificationCard 
                 key={`${cert.title}-${index}`}
                 cert={cert} 
-                isActive={activeId === index}
-                onClick={() => setActiveId(activeId === index ? null : index)}
+                onClick={() => setActiveId(index % certificates.length)}
               />
             ))}
           </div>

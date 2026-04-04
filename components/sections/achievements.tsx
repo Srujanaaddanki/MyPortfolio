@@ -15,9 +15,16 @@ const achievements = [
   },
   {
     id: "oneworld",
-    title: "3rd Runner-Up – One World Computation",
+    title: "3rd Runner-Up – One World Competition",
     description: "Secured top position in competitive problem-solving event.",
     image: "/images/7_OneWorld.jpeg",
+    link: null
+  },
+  {
+    id: "leetcode",
+    title: "Solved 350+ DSA Problems",
+    description: "Solved 350+ problems on Data Structures and Algorithms platforms, showcasing strong analytical thinking, coding proficiency, and consistent practice.",
+    image: "/images/11_LeetcodeHeatMap.jpg",
     link: null
   }
 ]

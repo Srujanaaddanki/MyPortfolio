@@ -283,7 +283,7 @@ export function ProjectsSection() {
             className="mt-16 flex justify-center"
           >
             <a
-              href="https://github.com/srujana-addanki"
+              href="https://github.com/Srujanaaddanki"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-3 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 px-8 py-4 text-base font-semibold text-zinc-900 dark:text-zinc-100 transition-all shadow-sm hover:shadow-md hover:-translate-y-1"
