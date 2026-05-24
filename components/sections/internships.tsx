@@ -5,47 +5,19 @@ import { motion, AnimatePresence, useInView } from "framer-motion"
 import { ChevronDown, ExternalLink } from "lucide-react"
 import Image from "next/image"
 
-const internships = [
-  {
-    id: "techtip24",
-    title: "Data Analytics Corporate Training Program",
-    organization: "TechTip24",
-    duration: "Present",
-    link: "https://www.linkedin.com/posts/srujana-addanki_dataanalytics-activity-7119045768824107008-t_sI",
-    imageLogo: "/images/9_Techtip24Logo.png",
-    points: [
-      "Currently undergoing intensive training in Data Analytics methodologies and best practices",
-      "Learning to build and deploy comprehensive data pipelines and visualization dashboards for business intelligence",
-      "Gaining hands-on experience with industry standard tools and real-world corporate data sets"
-    ]
-  },
-  {
-    id: "pathshala",
-    title: "DSA & Problem Solving using Java (Industrial Training)",
-    organization: "Programming Pathshala / LPU Mentorship",
-    duration: "Jan 2026 - Feb 2026",
-    link: "https://www.linkedin.com/feed/update/urn:li:activity:7433146848200179712/",
-    imageLogo: "/images/10_ProgrammingPatashalaLogo.png",
-    points: [
-      "Developed strong logical thinking and structured problem-solving skills for Data Structures using Java",
-      "Learned how to break down complex problems into efficient, optimized solutions for coding interviews",
-      "Gained confidence in solving real-world DSA problems with consistency and industry-oriented approach"
-    ]
-  },
-  {
-    id: "cipherschools",
-    title: "Data Structures & Algorithms using C++",
-    organization: "CipherSchools",
-    duration: "Jun 2025 – Jul 2025",
-    link: "https://drive.google.com/file/d/1ais01_mOJqesiRGkXULmoaRXHli5FDiQ/view?usp=sharing",
-    imageLogo: "/images/8_CipherSchoolLogo.png",
-    points: [
-      "Built strong foundations in Data Structures including Stacks, Queues, Trees, and advanced problem-solving techniques using C++",
-      "Applied OOP concepts such as classes, objects, and memory management to develop structured solutions",
-      "Improved algorithmic efficiency by implementing sorting and optimization techniques reducing time complexity"
-    ]
-  }
-]
+import internshipsData from "@/data/internships/internships.json"
+
+interface Internship {
+  id: string
+  title: string
+  organization: string
+  duration: string
+  link: string
+  imageLogo: string
+  points: string[]
+}
+
+const internships = internshipsData as Internship[]
 
 function InternshipCard({ item, index }: { item: typeof internships[0]; index: number }) {
   const [isExpanded, setIsExpanded] = useState(false)

@@ -5,32 +5,19 @@ import { useRef, useState, useEffect } from "react"
 import { ExternalLink, X, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
 
-const achievements = [
-  {
-    id: "leetcode",
-    title: "Solved 350+ DSA Problems",
-    description: "Solved 350+ problems on Data Structures and Algorithms platforms, showcasing strong analytical thinking, coding proficiency, and consistent practice.",
-    image: "/images/11_LeetcodeHeatMap.jpg",
-    link: null,
-    isPrimary: true
-  },
-  {
-    id: "oracle",
-    title: "OCI 2025 Data Science Certified",
-    description: "Recognized for expertise in data science and analytics.",
-    image: "/images/6_OracleBadge.png",
-    link: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=317F8ED0F85D446AA9CAB8C0F431A5530FBCD6D74B7B81920DB8BF8DD62F94AB",
-    isPrimary: false
-  },
-  {
-    id: "oneworld",
-    title: "3rd Runner-Up – One World Competition",
-    description: "Secured 3rd Runner-up in the One World Competition, demonstrating strong time management, teamwork, communication, adaptability, and creative problem-solving in a competitive environment.",
-    image: "/images/7_OneWorld.jpeg",
-    link: null,
-    isPrimary: false
-  }
-]
+import achievementsData from "@/data/achievements/achievements.json"
+
+interface Achievement {
+  id: string
+  title: string
+  description: string
+  date: string
+  image: string
+  externalLink: string
+  featured: boolean
+}
+
+const achievements = achievementsData as Achievement[]
 
 export function AchievementsSection() {
   const ref = useRef(null)
@@ -135,8 +122,8 @@ export function AchievementsSection() {
         
         <div className="mx-auto max-w-6xl grid gap-8 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
           {achievements.map((item, i) => {
-            const isClickable = !!item.link;
-            const isPrimary = item.isPrimary;
+            const isClickable = !!item.externalLink;
+            const isPrimary = item.featured;
             
             const CardContent = (
               <motion.div
@@ -185,7 +172,7 @@ export function AchievementsSection() {
             
             if (isClickable) {
               return (
-                <a key={item.id} href={item.link as string} target="_blank" rel="noopener noreferrer" className="block h-full focus:outline-none focus:ring-2 focus:ring-primary rounded-2xl">
+                <a key={item.id} href={item.externalLink} target="_blank" rel="noopener noreferrer" className="block h-full focus:outline-none focus:ring-2 focus:ring-primary rounded-2xl">
                   {CardContent}
                 </a>
               )

@@ -10,11 +10,14 @@ import { AchievementsSection } from "@/components/sections/achievements"
 import { EducationSection } from "@/components/sections/education"
 import { ContactSection } from "@/components/sections/contact"
 
+import { RecruiterQuickAccess } from "@/components/sections/recruiter-quick-access"
+
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Navbar />
       <HeroSection />
+      <RecruiterQuickAccess />
       <AboutSection />
       <SkillsSection />
       <InternshipsSection />

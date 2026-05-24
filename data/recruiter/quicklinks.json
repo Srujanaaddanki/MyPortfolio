@@ -1,0 +1,37 @@
+[
+  {
+    "id": "resume",
+    "title": "View Resume",
+    "target": "resume",
+    "description": "Select, preview, and download custom resumes",
+    "icon": "FileText"
+  },
+  {
+    "id": "projects",
+    "title": "Projects",
+    "target": "#projects",
+    "description": "Browse my latest projects and demo videos",
+    "icon": "FolderCode"
+  },
+  {
+    "id": "certifications",
+    "title": "Certifications",
+    "target": "#certifications",
+    "description": "View verified technical certificates",
+    "icon": "Award"
+  },
+  {
+    "id": "achievements",
+    "title": "Achievements",
+    "target": "#achievements",
+    "description": "Check out my coding milestones & accolades",
+    "icon": "Trophy"
+  },
+  {
+    "id": "contact",
+    "title": "Contact",
+    "target": "#contact",
+    "description": "Get in touch or schedule a chat",
+    "icon": "Mail"
+  }
+]

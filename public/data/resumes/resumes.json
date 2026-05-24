@@ -1,0 +1,32 @@
+[
+  {
+    "id": "general",
+    "title": "General Resume",
+    "status": "available",
+    "pdfPath": "/data/resumes/pdfs/General_Resume.pdf"
+  },
+  {
+    "id": "data-science",
+    "title": "Data Science Resume",
+    "status": "available",
+    "pdfPath": "/data/resumes/pdfs/Data_Science_Resume.pdf"
+  },
+  {
+    "id": "machine-learning",
+    "title": "Machine Learning Resume",
+    "status": "coming-soon",
+    "pdfPath": ""
+  },
+  {
+    "id": "android",
+    "title": "Android Development Resume",
+    "status": "coming-soon",
+    "pdfPath": ""
+  },
+  {
+    "id": "software-development",
+    "title": "Software Development Resume",
+    "status": "coming-soon",
+    "pdfPath": ""
+  }
+]

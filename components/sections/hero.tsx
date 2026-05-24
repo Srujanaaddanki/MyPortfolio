@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Github, Linkedin, Mail, Download, Eye, X } from "lucide-react"
+import { Github, Linkedin, Mail, Download, Eye, X, FileText, CheckCircle2, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import resumesData from "@/data/resumes/resumes.json"
 
 // Codolio icon component
 function CodolioIcon({ className }: { className?: string }) {
@@ -43,11 +44,56 @@ const socialLinks = [
 ]
 
 export function HeroSection() {
-  const [showCVPreview, setShowCVPreview] = useState(false)
+  const [activeResume, setActiveResume] = useState(resumesData[0])
+  const [showPreviewModal, setShowPreviewModal] = useState(false)
+  const [showSelectorModal, setShowSelectorModal] = useState(false)
+
+  // Load persistent resume on mount
+  useEffect(() => {
+    const savedResumeId = localStorage.getItem("activeResumeId")
+    if (savedResumeId) {
+      const found = resumesData.find((r) => r.id === savedResumeId)
+      if (found && found.status === "available") {
+        setActiveResume(found)
+      }
+    }
+  }, [])
+
+  // Listen to external request from Recruiter Quick Access
+  useEffect(() => {
+    const handleOpenModal = () => {
+      setShowSelectorModal(true)
+    }
+    window.addEventListener("open-resume-modal", handleOpenModal)
+    return () => {
+      window.removeEventListener("open-resume-modal", handleOpenModal)
+    }
+  }, [])
+
+  const handleSelectResume = (resume: typeof resumesData[0]) => {
+    if (resume.status === "available") {
+      setActiveResume(resume)
+      localStorage.setItem("activeResumeId", resume.id)
+      setShowSelectorModal(false)
+    }
+  }
 
   const handleDownloadCV = () => {
-    // Open Google Drive link in a new tab for download/viewing
-    window.open("https://drive.google.com/file/d/16dU0UoE940M40Za0mIet0i6HMFX_yXSG/view?usp=sharing", "_blank")
+    if (activeResume.pdfPath) {
+      window.open(activeResume.pdfPath, "_blank")
+    }
+  }
+
+  // Get emoji representation for resume type
+  const getResumeIcon = (id: string) => {
+    switch (id) {
+      case "general": return "📄"
+      case "data-science": return "📊"
+      case "machine-learning": return "🤖"
+      case "android": return "📱"
+      case "software-development": return "💻"
+      default: return "📝"
+    }
   }
 
   return (
@@ -114,30 +160,44 @@ export function HeroSection() {
             ))}
           </motion.div>
 
-          {/* CV Buttons */}
+          {/* CV Action Area */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex items-center justify-center gap-3 md:justify-start"
+            className="flex flex-col items-center md:items-start gap-4"
           >
-            <Button
-              onClick={() => setShowCVPreview(true)}
-              variant="outline"
-              size="lg"
-              className="gap-2 rounded-full px-6"
-            >
-              <Eye className="h-4 w-4" />
-              Preview CV
-            </Button>
-            <Button
-              onClick={handleDownloadCV}
-              size="lg"
-              className="gap-2 rounded-full px-6"
-            >
-              <Download className="h-4 w-4" />
-              Download CV
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => setShowPreviewModal(true)}
+                variant="outline"
+                size="lg"
+                className="gap-2 rounded-full px-6 shadow-sm hover:shadow"
+              >
+                <Eye className="h-4 w-4" />
+                Preview CV
+              </Button>
+              <Button
+                onClick={handleDownloadCV}
+                size="lg"
+                className="gap-2 rounded-full px-6 shadow-md hover:shadow-lg"
+              >
+                <Download className="h-4 w-4" />
+                Download CV
+              </Button>
+            </div>
+
+            {/* Active Resume Selection Indicator */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span>Active CV:</span>
+              <button
+                onClick={() => setShowSelectorModal(true)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-zinc-100 dark:bg-zinc-800/80 px-3 py-1 font-semibold text-foreground hover:border-primary/40 hover:text-primary transition-all duration-200"
+              >
+                <span>{getResumeIcon(activeResume.id)} {activeResume.title}</span>
+                <ChevronDown className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -198,15 +258,112 @@ export function HeroSection() {
         </motion.div>
       </motion.div>
 
+      {/* Resume Selector Modal */}
+      <AnimatePresence>
+        {showSelectorModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+            onClick={() => setShowSelectorModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              className="relative w-full max-w-xl bg-card rounded-2xl shadow-2xl border border-border p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-border pb-4 mb-5">
+                <div>
+                  <h3 className="text-xl font-bold text-foreground">Select Active CV</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Choose which CV is active for preview and download.
+                  </p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={() => setShowSelectorModal(false)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                {resumesData.map((resume) => {
+                  const isAvailable = resume.status === "available"
+                  const isActive = activeResume.id === resume.id
+
+                  return (
+                    <div
+                      key={resume.id}
+                      onClick={() => isAvailable && handleSelectResume(resume)}
+                      className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-200 ${
+                        isAvailable 
+                          ? "cursor-pointer hover:border-primary/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40" 
+                          : "opacity-60 bg-zinc-50/30 dark:bg-zinc-900/10 cursor-not-allowed"
+                      } ${
+                        isActive 
+                          ? "border-primary bg-primary/5 dark:bg-primary/5" 
+                          : "border-border/60"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl" role="img" aria-label={resume.title}>
+                          {getResumeIcon(resume.id)}
+                        </span>
+                        <div>
+                          <h4 className="font-bold text-sm text-foreground">{resume.title}</h4>
+                          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full inline-block mt-1 ${
+                            isAvailable 
+                              ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" 
+                              : "bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400"
+                          }`}>
+                            {isAvailable ? "Available" : "Coming Soon / Under Preparation"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {isAvailable ? (
+                        <div className="flex items-center gap-2">
+                          {isActive && (
+                            <span className="flex items-center gap-1 text-xs font-semibold text-primary">
+                              <CheckCircle2 className="h-4 w-4" />
+                              Active
+                            </span>
+                          )}
+                          {!isActive && (
+                            <span className="text-xs text-muted-foreground group-hover:text-foreground">
+                              Select
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-muted-foreground font-medium italic">
+                          Unavailable
+                        </span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* CV Preview Modal */}
       <AnimatePresence>
-        {showCVPreview && (
+        {showPreviewModal && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
-            onClick={() => setShowCVPreview(false)}
+            onClick={() => setShowPreviewModal(false)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -217,7 +374,10 @@ export function HeroSection() {
             >
               {/* Modal Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
-                <h3 className="font-semibold text-foreground">CV Preview</h3>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{getResumeIcon(activeResume.id)}</span>
+                  <h3 className="font-semibold text-foreground">Preview: {activeResume.title}</h3>
+                </div>
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={handleDownloadCV}
@@ -230,7 +390,7 @@ export function HeroSection() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => setShowCVPreview(false)}
+                    onClick={() => setShowPreviewModal(false)}
                   >
                     <X className="h-5 w-5" />
                   </Button>
@@ -239,7 +399,7 @@ export function HeroSection() {
               {/* PDF Embed */}
               <div className="h-[calc(100%-65px)] items-center justify-center bg-zinc-900/5 overflow-hidden">
                 <iframe
-                  src="https://drive.google.com/file/d/16dU0UoE940M40Za0mIet0i6HMFX_yXSG/preview"
+                  src={activeResume.pdfPath}
                   className="w-full h-full border-none"
                   title="CV Preview"
                 />

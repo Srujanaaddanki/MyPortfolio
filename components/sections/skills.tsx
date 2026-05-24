@@ -13,88 +13,22 @@ import {
   Github
 } from "lucide-react"
 
-const skillCategories = [
-  {
-    id: "languages",
-    name: "Languages",
-    icon: Code2,
-    skills: [
-      { name: "Python", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
-      { name: "Java", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
-      { name: "SQL", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" },
-      { name: "Kotlin", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" },
-      { name: "C++", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" },
-    ],
-  },
-  {
-    id: "data",
-    name: "Data & Analytics",
-    icon: Database,
-    skills: [
-      { name: "Pandas", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
-      { name: "NumPy", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg" },
-      { name: "Excel", iconUrl: "/excel.svg" },
-      { name: "Power BI", iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/New_Power_BI_Logo.svg/512px-New_Power_BI_Logo.svg.png" },
-      { name: "Tableau", iconUrl: "https://cdn.worldvectorlogo.com/logos/tableau-software.svg" },
-    ],
-  },
-  {
-    id: "ml",
-    name: "Machine Learning",
-    icon: Brain,
-    skills: [
-      { name: "Scikit-learn", iconUrl: "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" },
-      { name: "TensorFlow", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg" },
-      { name: "Matplotlib", iconUrl: "https://upload.wikimedia.org/wikipedia/commons/8/84/Matplotlib_icon.svg" },
-      { name: "Seaborn", iconUrl: "https://seaborn.pydata.org/_static/logo-mark-lightbg.svg" },
-      { name: "ML Models", iconUrl: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png" },
-    ],
-  },
-  {
-    id: "mobile",
-    name: "Mobile Development",
-    icon: Smartphone,
-    skills: [
-      { name: "Android", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg" },
-      { name: "Kotlin", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" },
-      { name: "Android Studio", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" },
-      { name: "Jetpack Compose", iconUrl: "/compose.svg" },
-      { name: "XML", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xml/xml-original.svg" },
-    ],
-  },
-  {
-    id: "cloud",
-    name: "Cloud & DevOps",
-    icon: Cloud,
-    skills: [
-      { name: "AWS", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
-      { name: "Docker", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
-      { name: "Hadoop", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/hadoop/hadoop-original.svg" },
-      { name: "Linux", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" },
-    ],
-    // badge: "Currently Learning",
-  },
-  {
-    id: "tools",
-    name: "Tools",
-    icon: Wrench,
-    skills: [
-      { name: "Jupyter Notebook", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" },
-      { name: "Git", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
-      { name: "GitHub", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
-      { name: "VS Code", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" },
-      { name: "Android Studio", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" },
-      { name: "Figma(UI/UX Design)", iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
-    ],
-  },
-]
+import skillsData from "@/data/skills/skills.json"
 
-const softSkills = [
-  "Adaptability",
-  "Time Management",
-  "Communication",
-  "Continuous Learning",
-]
+interface SkillItem {
+  name: string
+  icon: string
+}
+
+interface SkillCategory {
+  id: string
+  name: string
+  skills: SkillItem[]
+  badge?: string
+}
+
+const skillCategories = skillsData.categories as SkillCategory[]
+const softSkills = skillsData.softSkills as string[]
 
 export function SkillsSection() {
   const ref = useRef(null)
@@ -164,8 +98,9 @@ export function SkillsSection() {
                     >
                       <span className="text-center font-semibold text-zinc-800 dark:text-zinc-100">{skill.name}</span>
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white dark:bg-zinc-800 p-2 shadow-sm">
-                        <img src={skill.iconUrl} alt={skill.name} className="h-9 w-9 object-contain group-hover:scale-110 transition-transform duration-300" />
+                        <img src={skill.icon} alt={skill.name} className="h-9 w-9 object-contain group-hover:scale-110 transition-transform duration-300" />
                       </div>
+
                     </motion.div>
                   ))}
                 </div>

@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Business Intelligence Fundamentals",
+    "issuer": "Simplilearn",
+    "year": 2023,
+    "image": "/data/certificates/images/1_BusinessIntelligenceFundamentals_SimpleLearn.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Peer-to-Peer Protocols and Local Area Networks",
+    "issuer": "Coursera - University of Colorado System",
+    "year": 2024,
+    "image": "/data/certificates/images/2_peerTopeer_Coursera.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Deep Learning and Deployment on Web",
+    "issuer": "DevTown",
+    "year": 2024,
+    "image": "/data/certificates/images/3_DeepLearningAndDeploymentOnWeb_DevTown.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Computer Programming",
+    "issuer": "NeoColab",
+    "year": 2024,
+    "image": "/data/certificates/images/4_ComputerProgramming_NeoColab.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "The Bits and Bytes of Computer Networking",
+    "issuer": "Coursera - Google",
+    "year": 2024,
+    "image": "/data/certificates/images/5_TheBitsandBytesofComputerNetworking_Coursera.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Object Oriented Programming",
+    "issuer": "NeoColab",
+    "year": 2024,
+    "image": "/data/certificates/images/6_ObjectOrientedProgramming_NeoColab.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "ChatGPT-4 Prompt Engineering",
+    "issuer": "Infosys Springboard",
+    "year": 2025,
+    "image": "/data/certificates/images/7_ChatGPT4PromptEngineeringChatGPTGenerativeAI&LLM_Infosys.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "OCI 2025 Certified Data Science Professional",
+    "issuer": "Oracle",
+    "year": 2025,
+    "image": "/data/certificates/images/8_OCI2025CertifiedDataScienceProfessional_Oracle.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Java Programming",
+    "issuer": "NeoColab",
+    "year": 2025,
+    "image": "/data/certificates/images/9_JavaProgramming_NeoColab.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Cloud Computing",
+    "issuer": "NPTEL",
+    "year": 2025,
+    "image": "/data/certificates/images/10_CloudComputing_NPTEL.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Computational Theory & Finite Automata",
+    "issuer": "Infosys Springboard",
+    "year": 2025,
+    "image": "/data/certificates/images/11_ComputationalTheoryLanguagePrinciple&FiniteAutomataTheory_Infosys.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "OCI 2025 Certified AI Foundations Associate",
+    "issuer": "Oracle",
+    "year": 2025,
+    "image": "/data/certificates/images/12_OCI2025CertifiedAIFoundationsAssociate.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Build Generative AI Apps with No-Code Tools",
+    "issuer": "Infosys Springboard",
+    "year": 2025,
+    "image": "/data/certificates/images/13_BuildGenerativeAIAppsandSolutionswithNoCodeTools_Infosys.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Graph Theory",
+    "issuer": "Algo University",
+    "year": 2026,
+    "image": "/data/certificates/images/14_GraphTheory_AlgoUniversity.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  },
+  {
+    "title": "Mendix Rapid Developer Certification",
+    "issuer": "Mendix Academy",
+    "year": 2026,
+    "image": "/data/certificates/images/15_MendixRapidDeveloperCertification.png",
+    "certificateId": "",
+    "verificationUrl": ""
+  }
+]

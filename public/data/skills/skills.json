@@ -1,0 +1,76 @@
+{
+  "categories": [
+    {
+      "id": "languages",
+      "name": "Languages",
+      "skills": [
+        { "name": "Python", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+        { "name": "Java", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+        { "name": "SQL", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" },
+        { "name": "Kotlin", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" },
+        { "name": "C++", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" }
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data Analytics",
+      "skills": [
+        { "name": "Pandas", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
+        { "name": "NumPy", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg" },
+        { "name": "Excel", "icon": "/excel.svg" },
+        { "name": "Power BI", "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/New_Power_BI_Logo.svg/512px-New_Power_BI_Logo.svg.png" },
+        { "name": "Tableau", "icon": "https://cdn.worldvectorlogo.com/logos/tableau-software.svg" }
+      ]
+    },
+    {
+      "id": "ml",
+      "name": "Machine Learning",
+      "skills": [
+        { "name": "Scikit-learn", "icon": "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" },
+        { "name": "TensorFlow", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg" },
+        { "name": "Matplotlib", "icon": "https://upload.wikimedia.org/wikipedia/commons/8/84/Matplotlib_icon.svg" },
+        { "name": "Seaborn", "icon": "https://seaborn.pydata.org/_static/logo-mark-lightbg.svg" },
+        { "name": "ML Models", "icon": "https://cdn-icons-png.flaticon.com/512/2103/2103633.png" }
+      ]
+    },
+    {
+      "id": "mobile",
+      "name": "Mobile Development",
+      "skills": [
+        { "name": "Android", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg" },
+        { "name": "Kotlin", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" },
+        { "name": "Android Studio", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" },
+        { "name": "Jetpack Compose", "icon": "/compose.svg" },
+        { "name": "XML", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/xml/xml-original.svg" }
+      ]
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud & DevOps",
+      "skills": [
+        { "name": "AWS", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+        { "name": "Docker", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
+        { "name": "Hadoop", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/hadoop/hadoop-original.svg" },
+        { "name": "Linux", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" }
+      ]
+    },
+    {
+      "id": "tools",
+      "name": "Tools",
+      "skills": [
+        { "name": "Jupyter Notebook", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" },
+        { "name": "Git", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
+        { "name": "GitHub", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
+        { "name": "VS Code", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" },
+        { "name": "Android Studio", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" },
+        { "name": "Figma(UI/UX Design)", "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" }
+      ]
+    }
+  ],
+  "softSkills": [
+    "Adaptability",
+    "Time Management",
+    "Communication",
+    "Continuous Learning"
+  ]
+}

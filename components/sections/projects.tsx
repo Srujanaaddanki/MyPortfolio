@@ -7,6 +7,8 @@ import { ExternalLink, Github, X, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
+import projectsData from "@/data/projects/projects.json"
+
 interface Project {
   id: string
   title: string
@@ -17,65 +19,11 @@ interface Project {
   image?: string
   github: string
   demo?: string
+  category: string
+  featured: boolean
 }
 
-const projects: Project[] = [
-  {
-    id: "travel-budget",
-    title: "Travel Trip Budget Prediction",
-    shortDescription: "ML-powered application to predict travel budgets based on various factors.",
-    fullDescription: "A machine learning application that predicts travel trip budgets based on destination, duration, accommodation type, and travel preferences. The model analyzes historical travel data to provide accurate budget estimates, helping users plan their trips effectively.",
-    features: [
-      "Accurate budget predictions using trained ML models",
-      "Interactive interface for entering trip parameters",
-    ],
-    technologies: ["Python", "Scikit-learn", "Pandas", "NumPy", "Streamlit"],
-    image: "/images/2_TravelBudgetPicture.png",
-    github: "https://github.com/Srujanaaddanki/TravelTripBudgetPrediction",
-    demo: "https://www.linkedin.com/feed/update/urn:li:activity:7409296852480606208/",
-  },
-  {
-    id: "travel-dashboard",
-    title: "Travel Insights Dashboard",
-    shortDescription: "Interactive dashboard for analyzing travel trends and budget patterns.",
-    fullDescription: "A comprehensive Power BI dashboard that provides deep insights into travel patterns, budget allocations, and spending trends. The dashboard enables users to visualize travel data through interactive charts and make data-driven decisions for future trips.",
-    features: [
-      "Dynamic visualizations of travel spending patterns",
-      "Filter and drill-down capabilities for detailed analysis",
-    ],
-    technologies: ["Power BI", "Excel", "Data Analysis", "DAX"],
-    image: "/images/3_TravelInsightsBI.png",
-    github: "https://github.com/Srujanaaddanki/Travel-Insights-Budget-Analysis-Dashboard",
-    demo: "https://www.linkedin.com/feed/update/urn:li:activity:7408048091989282816/",
-  },
-  {
-    id: "hr-analytics",
-    title: "HR Analytics Dashboard",
-    shortDescription: "Data-driven dashboard for HR insights and employee analytics.",
-    fullDescription: "An HR Analytics Dashboard built to analyze employee data, track attrition rates, and identify key factors affecting workforce dynamics. The solution helps HR teams make informed decisions about talent management and retention strategies.",
-    features: [
-      "Employee attrition analysis with predictive insights",
-      "Department-wise performance metrics visualization",
-    ],
-    technologies: ["Power BI", "Excel", "SQL", "Data Visualization"],
-    image: "/images/4_HR_AnalysisDashboard.png",
-    github: "https://github.com/Srujanaaddanki/HR-Analytics-Dashboard",
-    demo: "https://www.linkedin.com/feed/update/urn:li:activity:7318343827302371329/",
-  },
-  {
-    id: "android-app",
-    title: "Android Compose App",
-    shortDescription: "Modern Android application built with Jetpack Compose.",
-    fullDescription: "A modern Android application featuring a complete signup and login system built with Jetpack Compose. The app demonstrates best practices in Android development including clean architecture, state management, and Material Design 3 components.",
-    features: [
-      "Clean UI with Jetpack Compose and Material Design 3",
-      "Secure authentication flow with form validation",
-    ],
-    technologies: ["Kotlin", "Jetpack Compose", "Android Studio", "Material Design 3"],
-    image: "/images/5_AndroidSignIn.png",
-    github: "https://github.com/Srujanaaddanki/Android-Compose-Signup-Login-App",
-  },
-]
+const projects = projectsData as Project[]
 
 function ProjectCard({ project, onClick }: { project: Project; onClick: () => void }) {
   return (

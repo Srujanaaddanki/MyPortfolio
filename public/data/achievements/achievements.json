@@ -1,0 +1,29 @@
+[
+  {
+    "id": "leetcode",
+    "title": "Solved 350+ DSA Problems",
+    "description": "Solved 350+ problems on Data Structures and Algorithms platforms, showcasing strong analytical thinking, coding proficiency, and consistent practice.",
+    "date": "Ongoing",
+    "image": "/data/achievements/images/11_LeetcodeHeatMap.jpg",
+    "externalLink": "",
+    "featured": true
+  },
+  {
+    "id": "oracle",
+    "title": "OCI 2025 Data Science Certified",
+    "description": "Recognized for expertise in data science and analytics.",
+    "date": "2025",
+    "image": "/data/achievements/images/6_OracleBadge.png",
+    "externalLink": "https://catalog-education.oracle.com/ords/certview/sharebadge?id=317F8ED0F85D446AA9CAB8C0F431A5530FBCD6D74B7B81920DB8BF8DD62F94AB",
+    "featured": false
+  },
+  {
+    "id": "oneworld",
+    "title": "3rd Runner-Up – One World Competition",
+    "description": "Secured 3rd Runner-up in the One World Competition, demonstrating strong time management, teamwork, communication, adaptability, and creative problem-solving in a competitive environment.",
+    "date": "2025",
+    "image": "/data/achievements/images/7_OneWorld.jpeg",
+    "externalLink": "",
+    "featured": false
+  }
+]
