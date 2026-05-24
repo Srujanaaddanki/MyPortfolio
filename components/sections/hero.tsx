@@ -43,6 +43,21 @@ const socialLinks = [
   },
 ]
 
+function getEmbedUrl(url: string) {
+  if (!url) return "";
+  if (url.includes("drive.google.com")) {
+    const fileIdMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
+    }
+    const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+    }
+  }
+  return url;
+}
+
 export function HeroSection() {
   const [activeResume, setActiveResume] = useState(resumesData[0])
   const [showPreviewModal, setShowPreviewModal] = useState(false)
@@ -399,7 +414,7 @@ export function HeroSection() {
               {/* PDF Embed */}
               <div className="h-[calc(100%-65px)] items-center justify-center bg-zinc-900/5 overflow-hidden">
                 <iframe
-                  src={activeResume.pdfPath}
+                  src={getEmbedUrl(activeResume.pdfPath)}
                   className="w-full h-full border-none"
                   title="CV Preview"
                 />

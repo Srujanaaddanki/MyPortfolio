@@ -23,7 +23,7 @@ export function RecruiterQuickAccess() {
         <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div>
             <h3 className="text-xl font-bold text-foreground">
-              ⚡ Recruiter Quick Access
+              ⚡Quick Access
             </h3>
             <p className="text-sm text-muted-foreground">
               Direct pathways to verify skills, experience, and download documents.

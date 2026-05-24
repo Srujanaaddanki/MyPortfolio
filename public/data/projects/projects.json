@@ -48,18 +48,20 @@
     "featured": false
   },
   {
-    "id": "android-app",
-    "title": "Android Compose App",
-    "shortDescription": "Modern Android application built with Jetpack Compose.",
-    "fullDescription": "A modern Android application featuring a complete signup and login system built with Jetpack Compose. The app demonstrates best practices in Android development including clean architecture, state management, and Material Design 3 components.",
+    "id": "smart-study-planner",
+    "title": "Smart Study Planner",
+    "shortDescription": "AI-powered productivity and study management Android application.",
+    "fullDescription": "A modern, AI-powered Android application designed to assist students in effectively managing academic schedules, tasks, and productivity. Built using Kotlin and Jetpack Compose under MVVM and Clean Architecture, it integrates large language models to generate personalized study recommendations.",
     "features": [
-      "Clean UI with Jetpack Compose and Material Design 3",
-      "Secure authentication flow with form validation"
+      "Personalized schedule generation and topic recommendations using the Groq API (LLM)",
+      "Focus Mode with a Pomodoro-style timer and WorkManager-based automated reminders",
+      "Offline-first support using Room Database for local data access",
+      "Firebase Authentication and Cloud Firestore for secure user sync across devices"
     ],
-    "technologies": ["Kotlin", "Jetpack Compose", "Android Studio", "Material Design 3"],
-    "image": "/data/projects/images/5_AndroidSignIn.png",
-    "github": "https://github.com/Srujanaaddanki/Android-Compose-Signup-Login-App",
+    "technologies": ["Kotlin", "Jetpack Compose", "Groq API", "Firebase", "Room Database", "Dagger Hilt", "WorkManager"],
+    "image": "/data/projects/images/SmartStudyApp.jpg",
+    "github": "https://github.com/Srujanaaddanki/Smart_Study_Planner",
     "category": "Mobile Development",
-    "featured": false
+    "featured": true
   }
 ]
