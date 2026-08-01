@@ -9,13 +9,13 @@
     "id": "data-science",
     "title": "Data Science Resume",
     "status": "available",
-    "pdfPath": "/data/resumes/pdfs/Data_Science_Resume.pdf"
+    "pdfPath": "/data/resumes/pdfs/Data_Science.pdf"
   },
   {
     "id": "machine-learning",
     "title": "Machine Learning Resume",
-    "status": "coming-soon",
-    "pdfPath": ""
+    "status": "available",
+    "pdfPath": "/data/resumes/pdfs/Machine_Learning_Resume.pdf"
   },
   {
     "id": "android",
