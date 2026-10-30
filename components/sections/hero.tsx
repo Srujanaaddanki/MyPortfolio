@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Github, Linkedin, Mail, Download, Eye, X, FileText, CheckCircle2, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -99,6 +99,44 @@ export function HeroSection() {
     }
   }
 
+  // Four-click download trigger for "solutions"
+  const clickCountRef = useRef(0)
+  const clickTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current)
+      }
+    }
+  }, [])
+
+  const handleSolutionsClick = () => {
+    clickCountRef.current += 1
+
+    if (clickCountRef.current === 1) {
+      clickTimerRef.current = setTimeout(() => {
+        clickCountRef.current = 0
+        clickTimerRef.current = null
+      }, 5000)
+    } else if (clickCountRef.current >= 4) {
+      if (clickTimerRef.current) {
+        clearTimeout(clickTimerRef.current)
+        clickTimerRef.current = null
+      }
+      clickCountRef.current = 0
+
+      const downloadUrl = "https://drive.google.com/uc?export=download&id=1qnWIqDI6q-EF6v1Yr-Kh4Map2Dvb2xhl"
+      const link = document.createElement("a")
+      link.href = downloadUrl
+      link.target = "_blank"
+      link.rel = "noopener noreferrer"
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+  }
+
   // Get emoji representation for resume type
   const getResumeIcon = (id: string) => {
     switch (id) {
@@ -149,7 +187,14 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-8 max-w-xl text-lg leading-relaxed text-muted-foreground"
           >
-            Data Analyst / Data Science enthusiast, Android Developer, and Machine Learning learner focused on building scalable, reliable applications with intelligent solutions.
+            Data Analyst / Data Science enthusiast, Android Developer, and Machine Learning learner focused on building scalable, reliable applications with intelligent <span
+              onClick={handleSolutionsClick}
+              onMouseDown={(e) => {
+                if (e.detail > 1) {
+                  e.preventDefault()
+                }
+              }}
+            >solutions</span>.
           </motion.p>
 
           {/* Social Links */}
